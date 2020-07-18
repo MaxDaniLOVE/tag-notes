@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Container } from 'reactstrap';
 import NotesContainer from '../NotesContainer';
 import staticNotes from '../../utils/staticNotes';
+import getRandomId from '../../utils/getRandomId';
 import './App.scss';
 
 class App extends Component {
@@ -27,6 +28,15 @@ class App extends Component {
     })
   };
 
+  onAddNewNote = () => {
+    const { newNote: note } = this.state;
+    const newNote = { 
+      id: getRandomId(),
+      note,
+    }
+    this.setState(({ notes }) => ({ notes: [...notes, newNote], newNote: '' }));
+  }
+
   render() {
     const { notes, isLoaded, newNote } = this.state;
     if (!isLoaded) {
@@ -34,7 +44,11 @@ class App extends Component {
     }
     return (
       <Container>
-        <NotesContainer notes={notes} onInputChange={this.onInputChange} newNote={newNote} />
+        <NotesContainer
+        notes={notes}
+        onInputChange={this.onInputChange}
+        newNote={newNote}
+        onAddNewNote={this.onAddNewNote}/>
       </Container>
     );
   }

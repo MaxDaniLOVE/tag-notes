@@ -1,23 +1,32 @@
 import React from 'react';
-import { ListGroup } from 'reactstrap';
+import { ListGroup, Input } from 'reactstrap';
 import PropTypes from 'prop-types';
 import NoteItem from '../NoteItem';
 import { AddNoteButton } from '../Buttons';
+import Modal from '../Modal';
+import useModalToggle from '../../hooks/useModalToggle';
 
 import './notesContainer.scss';
 
-const NotesContainer = ({ notes }) => {
+const NotesContainer = ({ notes, newNote, onInputChange }) => {
+  const [isModalOpen, onOpenModal, onCloseModal] = useModalToggle(false);
+
   const noteItems = notes.map(({ id, note }) => <NoteItem key={id}>{note}</NoteItem>);
   return (
     <>
       <ListGroup>{noteItems}</ListGroup>
-      <AddNoteButton onClick={() => {}} />
+      <AddNoteButton onClick={onOpenModal} />
+      <Modal isModalOpen={isModalOpen} onCloseModal={onCloseModal}>
+        <Input onChange={onInputChange} value={newNote} />
+      </Modal>
     </>
   );
 };
 
 NotesContainer.propTypes = {
   notes: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
+  newNote: PropTypes.string.isRequired,
+  onInputChange: PropTypes.func.isRequired,
 };
 
 export default NotesContainer;

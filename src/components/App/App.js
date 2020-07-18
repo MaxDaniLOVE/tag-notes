@@ -10,6 +10,7 @@ class App extends Component {
     this.state = {
       notes: [],
       isLoaded: false,
+      newNote: ''
     };
   }
 
@@ -20,14 +21,20 @@ class App extends Component {
     });
   }
 
+  onInputChange = ({ target: { value } }) => {
+    this.setState({
+      newNote: value,
+    })
+  };
+
   render() {
-    const { notes, isLoaded } = this.state;
+    const { notes, isLoaded, newNote } = this.state;
     if (!isLoaded) {
       return <p>There will be preloader</p>;
     }
     return (
       <Container>
-        <NotesContainer notes={notes} />
+        <NotesContainer notes={notes} onInputChange={this.onInputChange} newNote={newNote} />
       </Container>
     );
   }

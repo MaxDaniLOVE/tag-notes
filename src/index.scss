@@ -11,3 +11,9 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+.modal-content{
+  padding: 2rem;
+  .btn{
+    margin-top: 1rem;
+  }
+}

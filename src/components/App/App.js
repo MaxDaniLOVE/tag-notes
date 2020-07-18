@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { Container } from 'reactstrap';
 import NotesContainer from '../NotesContainer';
-import { staticNotes, hashTagRegExp } from '../../utils/constants';
+import { hashTagRegExp } from '../../utils/constants';
 import getRandomId from '../../utils/getRandomId';
 import FiltersContainer from '../FiltersContainer';
+import APIService from '../../services/APIService';
+import Preloader from '../Preloader';
 
 import './App.scss';
 
@@ -20,10 +22,13 @@ class App extends Component {
     };
   }
 
-  componentDidMount() {
-    const filters = this.getHashtags(staticNotes);
+  async componentDidMount() {
+    const notes = await APIService.getData();
+
+    const filters = this.getHashtags(notes);
+
     this.setState({
-      notes: staticNotes,
+      notes,
       isLoaded: true,
       filters,
     });
@@ -109,7 +114,7 @@ class App extends Component {
     const notesToDisplay = !filteredNotes.length ? notes : filteredNotes;
 
     if (!isLoaded) {
-      return <p>There will be preloader</p>;
+      return <Preloader />;
     }
     return (
       <Container>

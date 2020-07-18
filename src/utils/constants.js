@@ -1,6 +1,8 @@
 import getRandomId from './getRandomId';
 
-export default [
+const hashTagRegExp = /(?<=[\s>]|^)#(\w*[A-Za-z_]+\w*)/g;
+
+const staticNotes = [
   {
     id: getRandomId(),
     note: 'Add new note',
@@ -11,6 +13,8 @@ export default [
   },
   {
     id: getRandomId(),
-    note: 'Add new hashtag',
+    note: 'Add new #hashtag',
   },
 ];
+
+export { hashTagRegExp, staticNotes };

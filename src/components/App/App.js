@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Container } from 'reactstrap';
 import NotesContainer from '../NotesContainer';
-import staticNotes from '../../utils/staticNotes';
+import { staticNotes } from '../../utils/constants';
 import getRandomId from '../../utils/getRandomId';
 import './App.scss';
 

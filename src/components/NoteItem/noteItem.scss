@@ -2,6 +2,9 @@
   display: flex !important;
   justify-content: space-between;
   align-items: center;
+  &__highlighted{
+    background-color: #6ab358;
+  }
   &:first-child{
     border-radius: .25rem;
   }

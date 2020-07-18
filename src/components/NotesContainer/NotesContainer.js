@@ -9,7 +9,7 @@ import useModalToggle from '../../hooks/useModalToggle';
 import './notesContainer.scss';
 
 const NotesContainer = ({
-  notes, newNote, onInputChange, onAddNewNote,
+  notes, newNote, onInputChange, onAddNewNote, onEditSubmit,
 }) => {
   const [isModalOpen, onOpenModal, onCloseModal] = useModalToggle(false);
 
@@ -18,7 +18,10 @@ const NotesContainer = ({
     onCloseModal();
   };
 
-  const noteItems = notes.map(({ id, note }) => <NoteItem key={id}>{note}</NoteItem>);
+  const noteItems = notes.map(({ id, note }) => {
+    return <NoteItem key={id} id={id} onEditSubmit={onEditSubmit}>{note}</NoteItem>;
+  });
+
   return (
     <>
       <ListGroup>{noteItems}</ListGroup>
@@ -38,6 +41,7 @@ NotesContainer.propTypes = {
   newNote: PropTypes.string.isRequired,
   onInputChange: PropTypes.func.isRequired,
   onAddNewNote: PropTypes.func.isRequired,
+  onEditSubmit: PropTypes.func.isRequired,
 };
 
 export default NotesContainer;

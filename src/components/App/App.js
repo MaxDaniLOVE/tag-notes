@@ -70,6 +70,22 @@ class App extends Component {
     }
   }
 
+  onEditSubmit = (recievedId, note) => {
+    this.setState(({ notes }) => {
+      const index = notes.findIndex(({ id }) => id === recievedId);
+
+      const updatedNotes = [
+        ...notes.slice(0, index),
+        { note, id: getRandomId() },
+        ...notes.slice(index + 1),
+      ];
+
+      const filters = this.getHashtags(updatedNotes);
+
+      return { notes: updatedNotes, filters };
+    });
+  }
+
   render() {
     const {
       notes, isLoaded, newNote, filters, filteredNotes, activeFilter,
@@ -88,6 +104,7 @@ class App extends Component {
           onInputChange={this.onInputChange}
           newNote={newNote}
           onAddNewNote={this.onAddNewNote}
+          onEditSubmit={this.onEditSubmit}
         />
       </Container>
     );

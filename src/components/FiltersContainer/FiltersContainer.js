@@ -17,6 +17,7 @@ const FiltersContainer = ({ filters, onSetFilter, value }) => {
 FiltersContainer.propTypes = {
   filters: PropTypes.arrayOf(PropTypes.string).isRequired,
   onSetFilter: PropTypes.func.isRequired,
+  value: PropTypes.string.isRequired,
 };
 
 export default FiltersContainer;

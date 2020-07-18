@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Container } from 'reactstrap';
 import NotesContainer from '../NotesContainer';
 import staticNotes from '../../utils/staticNotes';
 import './App.scss';
@@ -25,7 +26,9 @@ class App extends Component {
       return <p>There will be preloader</p>;
     }
     return (
-      <NotesContainer notes={notes} />
+      <Container>
+        <NotesContainer notes={notes} />
+      </Container>
     );
   }
 }

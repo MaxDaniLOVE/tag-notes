@@ -1,11 +1,14 @@
 .list-group-item{
+  display: flex !important;
+  justify-content: space-between;
+  align-items: center;
   &:first-child{
     border-radius: .25rem;
   }
   margin-bottom: 1rem;
 }
 
-#notes-container{
+.list-group{
   .list-group-item + .list-group-item {
     border-radius: .25rem;
     border-top-width: 1px;

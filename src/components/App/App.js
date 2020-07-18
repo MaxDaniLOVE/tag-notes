@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { Container } from 'reactstrap';
 import NotesContainer from '../NotesContainer';
-import { staticNotes } from '../../utils/constants';
+import { staticNotes, hashTagRegExp } from '../../utils/constants';
 import getRandomId from '../../utils/getRandomId';
+import FiltersContainer from '../FiltersContainer';
+
 import './App.scss';
 
 class App extends Component {
@@ -11,15 +13,27 @@ class App extends Component {
     this.state = {
       notes: [],
       isLoaded: false,
-      newNote: ''
+      newNote: '',
+      filters: [],
+      filteredNotes: [],
+      activeFilter: '',
     };
   }
 
   componentDidMount() {
+    const filters = this.getHashtags(staticNotes);
     this.setState({
       notes: staticNotes,
       isLoaded: true,
+      filters,
     });
+  }
+
+  getHashtags = (notes) => {
+    let filters = new Set();
+    const tagsArray = notes.map(({note}) => note.match(hashTagRegExp)).flat().filter((tag) => tag);
+    tagsArray.map((tag) => filters.add(tag))
+    return [...filters];
   }
 
   onInputChange = ({ target: { value } }) => {
@@ -30,25 +44,46 @@ class App extends Component {
 
   onAddNewNote = () => {
     const { newNote: note } = this.state;
+
     const newNote = { 
       id: getRandomId(),
       note,
     }
-    this.setState(({ notes }) => ({ notes: [...notes, newNote], newNote: '' }));
+
+    this.setState(({ notes: previousNotes }) => {
+      const notes = [...previousNotes, newNote];
+      const filters = this.getHashtags(notes);
+      return { notes, newNote: '', filters};
+    });
+  }
+
+  onSetFilter = ({ target: { value } }) => {
+    const { notes } = this.state;
+
+    if (value === 'none') {
+      this.setState({ filteredNotes: [], activeFilter: '' });
+    } else {
+      const filteredNotes = notes.filter(({ note }) => note.includes(value));
+      this.setState({ activeFilter: value, filteredNotes });
+    }
   }
 
   render() {
-    const { notes, isLoaded, newNote } = this.state;
+    const { notes, isLoaded, newNote, filters, filteredNotes } = this.state;
+
+    const notesToDisplay = !filteredNotes.length ? notes : filteredNotes;
+    
     if (!isLoaded) {
       return <p>There will be preloader</p>;
     }
     return (
       <Container>
+        <FiltersContainer filters={filters} onSetFilter={this.onSetFilter}/>
         <NotesContainer
-        notes={notes}
-        onInputChange={this.onInputChange}
-        newNote={newNote}
-        onAddNewNote={this.onAddNewNote}/>
+          notes={notesToDisplay}
+          onInputChange={this.onInputChange}
+          newNote={newNote}
+          onAddNewNote={this.onAddNewNote}/>
       </Container>
     );
   }

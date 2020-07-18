@@ -10,7 +10,9 @@ import { hashTagRegExp } from '../../utils/constants';
 
 import './noteItem.scss';
 
-const NoteItem = ({ children, id, onEditSubmit }) => {
+const NoteItem = ({
+  children, id, onEditSubmit, onDeleteNote,
+}) => {
   const [isModalOpen, onOpenModal, onCloseModal] = useModalToggle(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [inputValue, setInputValue] = useState(children);
@@ -27,6 +29,8 @@ const NoteItem = ({ children, id, onEditSubmit }) => {
     onEditSubmit(id, inputValue);
     hideEditInput();
   };
+
+  const onDelete = () => onDeleteNote(id);
 
   const content = isEditMode
     ? (
@@ -45,7 +49,7 @@ const NoteItem = ({ children, id, onEditSubmit }) => {
           autoEscape
           textToHighlight={children}
         />
-        <NotesButtons onShow={onOpenModal} onEdit={showEditInput} onDelete={() => {}} />
+        <NotesButtons onShow={onOpenModal} onEdit={showEditInput} onDelete={onDelete} />
       </>
     );
 
@@ -67,6 +71,7 @@ NoteItem.propTypes = {
   children: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
   onEditSubmit: PropTypes.func.isRequired,
+  onDeleteNote: PropTypes.func.isRequired,
 };
 
 export default NoteItem;

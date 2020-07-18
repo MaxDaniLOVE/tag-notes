@@ -86,6 +86,21 @@ class App extends Component {
     });
   }
 
+  onDeleteNote = (recievedId) => {
+    this.setState(({ notes }) => {
+      const index = notes.findIndex(({ id }) => id === recievedId);
+
+      const updatedNotes = [
+        ...notes.slice(0, index),
+        ...notes.slice(index + 1),
+      ];
+
+      const filters = this.getHashtags(updatedNotes);
+
+      return { notes: updatedNotes, filters };
+    });
+  }
+
   render() {
     const {
       notes, isLoaded, newNote, filters, filteredNotes, activeFilter,
@@ -105,6 +120,7 @@ class App extends Component {
           newNote={newNote}
           onAddNewNote={this.onAddNewNote}
           onEditSubmit={this.onEditSubmit}
+          onDeleteNote={this.onDeleteNote}
         />
       </Container>
     );

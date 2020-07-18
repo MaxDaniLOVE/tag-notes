@@ -30,30 +30,32 @@ class App extends Component {
   }
 
   getHashtags = (notes) => {
-    let filters = new Set();
-    const tagsArray = notes.map(({note}) => note.match(hashTagRegExp)).flat().filter((tag) => tag);
-    tagsArray.map((tag) => filters.add(tag))
+    const filters = new Set();
+    const tagsArray = notes.map(({ note }) => note.match(hashTagRegExp))
+      .flat()
+      .filter((tag) => tag);
+    tagsArray.map((tag) => filters.add(tag));
     return [...filters];
   }
 
   onInputChange = ({ target: { value } }) => {
     this.setState({
       newNote: value,
-    })
+    });
   };
 
   onAddNewNote = () => {
     const { newNote: note } = this.state;
 
-    const newNote = { 
+    const newNote = {
       id: getRandomId(),
       note,
-    }
+    };
 
     this.setState(({ notes: previousNotes }) => {
       const notes = [...previousNotes, newNote];
       const filters = this.getHashtags(notes);
-      return { notes, newNote: '', filters};
+      return { notes, newNote: '', filters };
     });
   }
 
@@ -69,21 +71,24 @@ class App extends Component {
   }
 
   render() {
-    const { notes, isLoaded, newNote, filters, filteredNotes } = this.state;
+    const {
+      notes, isLoaded, newNote, filters, filteredNotes, activeFilter,
+    } = this.state;
 
     const notesToDisplay = !filteredNotes.length ? notes : filteredNotes;
-    
+
     if (!isLoaded) {
       return <p>There will be preloader</p>;
     }
     return (
       <Container>
-        <FiltersContainer filters={filters} onSetFilter={this.onSetFilter}/>
+        <FiltersContainer filters={filters} onSetFilter={this.onSetFilter} value={activeFilter} />
         <NotesContainer
           notes={notesToDisplay}
           onInputChange={this.onInputChange}
           newNote={newNote}
-          onAddNewNote={this.onAddNewNote}/>
+          onAddNewNote={this.onAddNewNote}
+        />
       </Container>
     );
   }

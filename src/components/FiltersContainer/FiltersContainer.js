@@ -2,12 +2,12 @@ import React from 'react';
 import { Input, FormGroup, Label } from 'reactstrap';
 import PropTypes from 'prop-types';
 
-const FiltersContainer = ({ filters, onSetFilter }) => {
+const FiltersContainer = ({ filters, onSetFilter, value }) => {
   const options = ['none', ...filters];
   return (
     <FormGroup>
       <Label for="exampleSelect">Select</Label>
-      <Input type="select" name="select" id="exampleSelect" onChange={onSetFilter}>
+      <Input type="select" name="select" id="exampleSelect" onChange={onSetFilter} value={value}>
         {options.map((option) => <option key={option}>{option}</option>)}
       </Input>
     </FormGroup>

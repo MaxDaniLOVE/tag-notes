@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Modal as ReactstrapModal } from 'reactstrap';
+import './modal.scss';
 
 const Modal = ({ isModalOpen, onCloseModal, children }) => (
   <ReactstrapModal isOpen={isModalOpen} toggle={onCloseModal}>

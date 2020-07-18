@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { ListGroupItem, Input, Button } from 'reactstrap';
+import { ListGroupItem, Button } from 'reactstrap';
 import Highlighter from 'react-highlight-words';
 import NotesButtons from '../NotesButtons';
 import Modal from '../Modal';
 import NoteInfo from '../NoteInfo';
 import useModalToggle from '../../hooks/useModalToggle';
 import { hashTagRegExp } from '../../utils/constants';
-
+import HighlightedInput from '../HighlightedInput';
 import './noteItem.scss';
 
 const NoteItem = ({
@@ -35,7 +35,7 @@ const NoteItem = ({
   const content = isEditMode
     ? (
       <>
-        <Input value={inputValue} onChange={onChange} />
+        <HighlightedInput inputValue={inputValue} onChange={onChange} />
         <Button color="danger" onClick={hideEditInput}>X</Button>
         <Button color="success" onClick={onSaveChanges}>Save</Button>
       </>

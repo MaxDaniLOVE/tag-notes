@@ -6,7 +6,7 @@ const FiltersContainer = ({ filters, onSetFilter, value }) => {
   const options = ['none', ...filters];
   return (
     <FormGroup>
-      <Label for="exampleSelect">Select</Label>
+      <Label for="exampleSelect">Select filter:</Label>
       <Input type="select" name="select" id="exampleSelect" onChange={onSetFilter} value={value}>
         {options.map((option) => <option key={option}>{option}</option>)}
       </Input>

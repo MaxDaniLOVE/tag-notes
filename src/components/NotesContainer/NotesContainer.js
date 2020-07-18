@@ -1,10 +1,11 @@
 import React from 'react';
-import { ListGroup, Input, Button } from 'reactstrap';
+import { ListGroup, Button } from 'reactstrap';
 import PropTypes from 'prop-types';
 import NoteItem from '../NoteItem';
 import { AddNoteButton } from '../Buttons';
 import Modal from '../Modal';
 import useModalToggle from '../../hooks/useModalToggle';
+import HighlightedInput from '../HighlightedInput';
 
 import './notesContainer.scss';
 
@@ -35,7 +36,7 @@ const NotesContainer = ({
       <AddNoteButton onClick={onOpenModal} />
       <Modal isModalOpen={isModalOpen} onCloseModal={onCloseModal}>
         <>
-          <Input onChange={onInputChange} value={newNote} />
+          <HighlightedInput onChange={onInputChange} inputValue={newNote} />
           <Button onClick={onAddNote}>+</Button>
         </>
       </Modal>

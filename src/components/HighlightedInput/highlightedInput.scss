@@ -1,0 +1,24 @@
+.input-wrapper{
+  position: relative;
+  width: 80%;
+  display: inline-block;
+  input{
+    position: relative;
+    background-color: transparent;
+    z-index: 2;
+    &:active, &:focus{
+      background-color: transparent;
+    }
+  }
+  .list-group-item__title{
+    position: absolute;
+    width: 100%;
+    z-index: 1;
+    top: 0;
+    padding: .375rem .75rem;
+    color: transparent;
+    .list-group-item__highlighted{
+      color: transparent;
+    }
+  }
+}

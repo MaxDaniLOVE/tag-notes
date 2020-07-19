@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { ListGroupItem, Button } from 'reactstrap';
+import { ListGroupItem } from 'reactstrap';
 import Highlighter from 'react-highlight-words';
 import NotesButtons from '../NotesButtons';
 import Modal from '../Modal';
@@ -8,12 +8,13 @@ import NoteInfo from '../NoteInfo';
 import useModalToggle from '../../hooks/useModalToggle';
 import { hashTagRegExp } from '../../utils/constants';
 import HighlightedInput from '../HighlightedInput';
+import { SuccessButton, DangerButton } from '../Buttons';
 import './noteItem.scss';
 
 const NoteItem = ({
   children, id, onEditSubmit, onDeleteNote,
 }) => {
-  const [isModalOpen, onOpenModal, onCloseModal] = useModalToggle(false);
+  const [isModalOpen, onOpenModal, onCloseModal] = useModalToggle();
   const [isEditMode, setIsEditMode] = useState(false);
   const [inputValue, setInputValue] = useState(children);
 
@@ -36,8 +37,8 @@ const NoteItem = ({
     ? (
       <>
         <HighlightedInput inputValue={inputValue} onChange={onChange} />
-        <Button color="danger" onClick={hideEditInput}>X</Button>
-        <Button color="success" onClick={onSaveChanges}>Save</Button>
+        <DangerButton color="danger" onClick={hideEditInput}>X</DangerButton>
+        <SuccessButton onClick={onSaveChanges}>Save</SuccessButton>
       </>
     )
     : (

@@ -10,13 +10,18 @@ import HighlightedInput from '../HighlightedInput';
 import './notesContainer.scss';
 
 const NotesContainer = ({
-  notes, newNote, onInputChange, onAddNewNote, onEditSubmit, onDeleteNote,
+  notes, newNote, onInputChange, onAddNewNote, onEditSubmit, onDeleteNote, onResetNewNote,
 }) => {
   const [isModalOpen, onOpenModal, onCloseModal] = useModalToggle();
 
+  const closeModalHandler = () => {
+    onResetNewNote();
+    onCloseModal();
+  };
+
   const onAddNote = () => {
     onAddNewNote();
-    onCloseModal();
+    closeModalHandler();
   };
 
   const noteItems = notes.map(({ id, note }) => (
@@ -34,7 +39,7 @@ const NotesContainer = ({
     <>
       <ListGroup>{noteItems}</ListGroup>
       <AddNoteButton onClick={onOpenModal} />
-      <Modal isModalOpen={isModalOpen} onCloseModal={onCloseModal} title="Add note:">
+      <Modal isModalOpen={isModalOpen} onCloseModal={closeModalHandler} title="Add note:">
         <>
           <HighlightedInput onChange={onInputChange} inputValue={newNote} />
           <SuccessButton onClick={onAddNote}>+</SuccessButton>
@@ -51,6 +56,7 @@ NotesContainer.propTypes = {
   onAddNewNote: PropTypes.func.isRequired,
   onEditSubmit: PropTypes.func.isRequired,
   onDeleteNote: PropTypes.func.isRequired,
+  onResetNewNote: PropTypes.func.isRequired,
 };
 
 export default NotesContainer;

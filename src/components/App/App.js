@@ -40,6 +40,8 @@ class App extends Component {
     });
   };
 
+  onResetNewNote = () => this.setState({ newNote: '' });
+
   onAddNewNote = () => {
     const { newNote: note } = this.state;
 
@@ -55,7 +57,7 @@ class App extends Component {
       const filteredNotes = !activeFilter ? [] : filterNotesByTag(notes, activeFilter);
 
       return {
-        notes, newNote: '', filters, filteredNotes,
+        notes, filters, filteredNotes,
       };
     });
   }
@@ -133,6 +135,7 @@ class App extends Component {
           onAddNewNote={this.onAddNewNote}
           onEditSubmit={this.onEditSubmit}
           onDeleteNote={this.onDeleteNote}
+          onResetNewNote={this.onResetNewNote}
         />
       </Container>
     );

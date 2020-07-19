@@ -11,6 +11,17 @@ class APIService {
       return staticNotes;
     }
   }
+
+  saveData = async (data) => {
+    try {
+      await fetch('http://localhost:8080/update_file', {
+        method: 'POST',
+        body: JSON.stringify(data),
+      });
+    } catch (error) {
+      console.error('Can\'t update file. Try later');
+    }
+  }
 }
 
 export default new APIService();

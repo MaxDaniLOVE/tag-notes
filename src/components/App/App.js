@@ -44,16 +44,18 @@ class App extends Component {
 
   onResetNewNote = () => this.setState({ newNote: '' });
 
-  onAddNewNote = () => {
-    const { newNote: note } = this.state;
+  onAddNewNote = async () => {
+    const { newNote: note, notes: previousNotes } = this.state;
 
     const newNote = {
       id: getRandomId(),
       note,
     };
 
-    this.setState(({ notes: previousNotes, activeFilter }) => {
-      const notes = [...previousNotes, newNote];
+    const notes = [...previousNotes, newNote];
+    await APIService.saveData(notes);
+
+    this.setState(({ activeFilter }) => {
       const filters = getHashtags(notes);
 
       const { filteredNotes } = updateFilterData(notes, activeFilter);
@@ -75,35 +77,39 @@ class App extends Component {
     }
   }
 
-  onEditSubmit = (recievedId, note, activeFilter) => {
-    this.setState(({ notes }) => {
-      const index = notes.findIndex(({ id }) => id === recievedId);
+  onEditSubmit = async (recievedId, note, activeFilter) => {
+    const { notes } = this.state;
 
-      const updatedNotes = [
-        ...notes.slice(0, index),
-        { note, id: getRandomId() },
-        ...notes.slice(index + 1),
-      ];
+    const index = notes.findIndex(({ id }) => id === recievedId);
 
-      const filters = getHashtags(updatedNotes);
+    const updatedNotes = [
+      ...notes.slice(0, index),
+      { note, id: getRandomId() },
+      ...notes.slice(index + 1),
+    ];
+    await APIService.saveData(updatedNotes);
 
-      const { filteredNotes, newFilter } = updateFilterData(updatedNotes, activeFilter, filters);
+    const filters = getHashtags(updatedNotes);
 
-      return {
-        notes: updatedNotes, filters, filteredNotes, activeFilter: newFilter,
-      };
+    const { filteredNotes, newFilter } = updateFilterData(updatedNotes, activeFilter, filters);
+
+    this.setState({
+      notes: updatedNotes, filters, filteredNotes, activeFilter: newFilter,
     });
   }
 
-  onDeleteNote = (recievedId) => {
-    this.setState(({ notes, activeFilter }) => {
-      const index = notes.findIndex(({ id }) => id === recievedId);
+  onDeleteNote = async (recievedId) => {
+    const { notes } = this.state;
 
-      const updatedNotes = [
-        ...notes.slice(0, index),
-        ...notes.slice(index + 1),
-      ];
+    const index = notes.findIndex(({ id }) => id === recievedId);
 
+    const updatedNotes = [
+      ...notes.slice(0, index),
+      ...notes.slice(index + 1),
+    ];
+    await APIService.saveData(updatedNotes);
+
+    this.setState(({ activeFilter }) => {
       const filters = getHashtags(updatedNotes);
 
       const { filteredNotes, newFilter } = updateFilterData(updatedNotes, activeFilter, filters);

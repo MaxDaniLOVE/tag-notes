@@ -7,6 +7,8 @@ import FiltersContainer from '../FiltersContainer';
 import APIService from '../../services/APIService';
 import Preloader from '../Preloader';
 import filterNotesByTag from '../../utils/filterNotesByTag';
+import updateFilterData from '../../utils/updateFilterData';
+
 import './App.scss';
 
 class App extends Component {
@@ -54,7 +56,7 @@ class App extends Component {
       const notes = [...previousNotes, newNote];
       const filters = getHashtags(notes);
 
-      const filteredNotes = !activeFilter ? [] : filterNotesByTag(notes, activeFilter);
+      const { filteredNotes } = updateFilterData(notes, activeFilter);
 
       return {
         notes, filters, filteredNotes,
@@ -85,11 +87,10 @@ class App extends Component {
 
       const filters = getHashtags(updatedNotes);
 
-      const filteredNotes = !activeFilter ? [] : filterNotesByTag(updatedNotes, activeFilter);
-      const updatedFilter = filters.includes(activeFilter) ? activeFilter : '';
+      const { filteredNotes, newFilter } = updateFilterData(updatedNotes, activeFilter, filters);
 
       return {
-        notes: updatedNotes, filters, filteredNotes, activeFilter: updatedFilter,
+        notes: updatedNotes, filters, filteredNotes, activeFilter: newFilter,
       };
     });
   }
@@ -105,11 +106,10 @@ class App extends Component {
 
       const filters = getHashtags(updatedNotes);
 
-      const filteredNotes = !activeFilter ? [] : filterNotesByTag(updatedNotes, activeFilter);
-      const updatedFilter = filters.includes(activeFilter) ? activeFilter : '';
+      const { filteredNotes, newFilter } = updateFilterData(updatedNotes, activeFilter, filters);
 
       return {
-        notes: updatedNotes, filters, filteredNotes, activeFilter: updatedFilter,
+        notes: updatedNotes, filters, filteredNotes, activeFilter: newFilter,
       };
     });
   }

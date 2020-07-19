@@ -6,7 +6,7 @@ import { AddNoteButton, SuccessButton } from '../Buttons';
 import Modal from '../Modal';
 import useModalToggle from '../../hooks/useModalToggle';
 import HighlightedInput from '../HighlightedInput';
-
+import { SaveIcon } from '../../icons';
 import './notesContainer.scss';
 
 const NotesContainer = ({
@@ -42,7 +42,7 @@ const NotesContainer = ({
       <Modal isModalOpen={isModalOpen} onCloseModal={closeModalHandler} title="Add note:">
         <>
           <HighlightedInput onChange={onInputChange} inputValue={newNote} />
-          <SuccessButton onClick={onAddNote}>+</SuccessButton>
+          <SuccessButton onClick={onAddNote}><SaveIcon /></SuccessButton>
         </>
       </Modal>
     </>

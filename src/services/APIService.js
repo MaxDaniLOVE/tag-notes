@@ -7,7 +7,7 @@ class APIService {
       const notes = await response.json();
       return notes;
     } catch (error) {
-      console.error('Static data was loaded. Please run `npm run server` command to use app after reloading page');
+      console.error('Static data was loaded. Please run `npm run server` command to use data from .json file');
       return staticNotes;
     }
   }

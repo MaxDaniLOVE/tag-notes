@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { Container } from 'reactstrap';
 import NotesContainer from '../NotesContainer';
-import { hashTagRegExp } from '../../utils/constants';
+import getHashtags from '../../utils/getHashtags';
 import getRandomId from '../../utils/getRandomId';
 import FiltersContainer from '../FiltersContainer';
 import APIService from '../../services/APIService';
 import Preloader from '../Preloader';
-
+import filterNotesByTag from '../../utils/filterNotesByTag';
 import './App.scss';
 
 class App extends Component {
@@ -25,22 +25,13 @@ class App extends Component {
   async componentDidMount() {
     const notes = await APIService.getData();
 
-    const filters = this.getHashtags(notes);
+    const filters = getHashtags(notes);
 
     this.setState({
       notes,
       isLoaded: true,
       filters,
     });
-  }
-
-  getHashtags = (notes) => {
-    const filters = new Set();
-    const tagsArray = notes.map(({ note }) => note.match(hashTagRegExp))
-      .flat()
-      .filter((tag) => tag);
-    tagsArray.map((tag) => filters.add(tag));
-    return [...filters];
   }
 
   onInputChange = ({ target: { value } }) => {
@@ -57,10 +48,15 @@ class App extends Component {
       note,
     };
 
-    this.setState(({ notes: previousNotes }) => {
+    this.setState(({ notes: previousNotes, activeFilter }) => {
       const notes = [...previousNotes, newNote];
-      const filters = this.getHashtags(notes);
-      return { notes, newNote: '', filters };
+      const filters = getHashtags(notes);
+
+      const filteredNotes = !activeFilter ? [] : filterNotesByTag(notes, activeFilter);
+
+      return {
+        notes, newNote: '', filters, filteredNotes,
+      };
     });
   }
 
@@ -70,12 +66,12 @@ class App extends Component {
     if (value === 'none') {
       this.setState({ filteredNotes: [], activeFilter: '' });
     } else {
-      const filteredNotes = notes.filter(({ note }) => note.includes(value));
+      const filteredNotes = filterNotesByTag(notes, value);
       this.setState({ activeFilter: value, filteredNotes });
     }
   }
 
-  onEditSubmit = (recievedId, note) => {
+  onEditSubmit = (recievedId, note, activeFilter) => {
     this.setState(({ notes }) => {
       const index = notes.findIndex(({ id }) => id === recievedId);
 
@@ -85,14 +81,19 @@ class App extends Component {
         ...notes.slice(index + 1),
       ];
 
-      const filters = this.getHashtags(updatedNotes);
+      const filters = getHashtags(updatedNotes);
 
-      return { notes: updatedNotes, filters };
+      const filteredNotes = !activeFilter ? [] : filterNotesByTag(updatedNotes, activeFilter);
+      const updatedFilter = filters.includes(activeFilter) ? activeFilter : '';
+
+      return {
+        notes: updatedNotes, filters, filteredNotes, activeFilter: updatedFilter,
+      };
     });
   }
 
   onDeleteNote = (recievedId) => {
-    this.setState(({ notes }) => {
+    this.setState(({ notes, activeFilter }) => {
       const index = notes.findIndex(({ id }) => id === recievedId);
 
       const updatedNotes = [
@@ -100,9 +101,14 @@ class App extends Component {
         ...notes.slice(index + 1),
       ];
 
-      const filters = this.getHashtags(updatedNotes);
+      const filters = getHashtags(updatedNotes);
 
-      return { notes: updatedNotes, filters };
+      const filteredNotes = !activeFilter ? [] : filterNotesByTag(updatedNotes, activeFilter);
+      const updatedFilter = filters.includes(activeFilter) ? activeFilter : '';
+
+      return {
+        notes: updatedNotes, filters, filteredNotes, activeFilter: updatedFilter,
+      };
     });
   }
 
@@ -116,6 +122,7 @@ class App extends Component {
     if (!isLoaded) {
       return <Preloader />;
     }
+
     return (
       <Container>
         <FiltersContainer filters={filters} onSetFilter={this.onSetFilter} value={activeFilter} />

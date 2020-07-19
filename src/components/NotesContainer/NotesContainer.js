@@ -34,7 +34,7 @@ const NotesContainer = ({
     <>
       <ListGroup>{noteItems}</ListGroup>
       <AddNoteButton onClick={onOpenModal} />
-      <Modal isModalOpen={isModalOpen} onCloseModal={onCloseModal}>
+      <Modal isModalOpen={isModalOpen} onCloseModal={onCloseModal} title="Add note:">
         <>
           <HighlightedInput onChange={onInputChange} inputValue={newNote} />
           <Button onClick={onAddNote}>+</Button>

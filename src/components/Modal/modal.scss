@@ -1,5 +1,10 @@
 .modal-content{
   padding: 2rem;
+  .modal-header{
+    padding: 0;
+    border-bottom: none;
+    margin-bottom: 1rem;
+  }
   .btn{
     margin-top: 1rem;
   }

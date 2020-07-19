@@ -58,7 +58,7 @@ const NoteItem = ({
       <ListGroupItem>
         {content}
       </ListGroupItem>
-      <Modal isModalOpen={isModalOpen} onCloseModal={onCloseModal}>
+      <Modal isModalOpen={isModalOpen} onCloseModal={onCloseModal} title="Note:">
         <NoteInfo>
           {children}
         </NoteInfo>

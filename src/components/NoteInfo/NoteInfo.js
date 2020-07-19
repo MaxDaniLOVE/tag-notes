@@ -5,7 +5,6 @@ import { hashTagRegExp } from '../../utils/constants';
 
 const NoteInfo = ({ children }) => (
   <div className="note-info">
-    <h3>Note:</h3>
     <h4>
       <Highlighter
         className="list-group-item__title"
